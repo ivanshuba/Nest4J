@@ -6,89 +6,89 @@ import com.qunhe.util.nest.config.Config;
  * @author yisa
  */
 public class Segment {
-    public double x ;
-    public double y;
+  public double x;
+  public double y;
 
-    public boolean marked = false;
-    public Segment start;
-    public Segment end;
+  public boolean marked = false;
+  public Segment start;
+  public Segment end;
 
 
-    @Override
-    public boolean equals(Object obj) {
-        Segment s = (Segment) obj;
-        if(x == s.x && y == s.y ){
-            return true;
-        }
-        return false;
+  public Segment() {
+  }
+
+  public Segment(Segment srcSeg) {
+    this.x = srcSeg.x;
+    this.y = srcSeg.y;
+  }
+
+
+  public Segment(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  public Segment(double x, double y) {
+    int Ix = (int) (x * Config.CLIIPER_SCALE);
+    int Iy = (int) (y * Config.CLIIPER_SCALE);
+
+    this.x = Ix * 1.0 / Config.CLIIPER_SCALE;
+    this.y = Iy * 1.0 / Config.CLIIPER_SCALE;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    Segment s = (Segment) obj;
+    if (x == s.x && y == s.y) {
+      return true;
     }
+    return false;
+  }
 
-    public Segment() {
-    }
+  @Override
+  public String toString() {
+    return "x = " + x + ", y = " + y;
+  }
 
+  public boolean isMarked() {
+    return marked;
+  }
 
-    public Segment(Segment srcSeg){
-        this.x = srcSeg.x;
-        this.y = srcSeg.y;
-    }
+  public void setMarked(boolean marked) {
+    this.marked = marked;
+  }
 
-    public Segment(int x , int y ){
-        this.x = x ;
-        this.y = y;
-    }
+  public Segment getStart() {
+    return start;
+  }
 
-    public Segment(double x, double y) {
-        int Ix =(int) (x * Config.CLIIPER_SCALE);
-        int Iy =(int) (y * Config.CLIIPER_SCALE);
+  public void setStart(Segment start) {
+    this.start = start;
+  }
 
-        this.x = Ix*1.0/Config.CLIIPER_SCALE;
-        this.y = Iy *1.0/ Config.CLIIPER_SCALE;
-    }
+  public Segment getEnd() {
+    return end;
+  }
 
-    @Override
-    public String toString() {
-        return "x = "+ x+", y = "+y;
-    }
+  public void setEnd(Segment end) {
+    this.end = end;
+  }
 
-    public boolean isMarked() {
-        return marked;
-    }
+  public double getX() {
+    return x;
+  }
 
-    public void setMarked(boolean marked) {
-        this.marked = marked;
-    }
+  public void setX(double x) {
+    int lx = (int) (x * Config.CLIIPER_SCALE);
+    this.x = lx * 1.0 / Config.CLIIPER_SCALE;
+  }
 
-    public Segment getStart() {
-        return start;
-    }
+  public double getY() {
+    return y;
+  }
 
-    public void setStart(Segment start) {
-        this.start = start;
-    }
-
-    public Segment getEnd() {
-        return end;
-    }
-
-    public void setEnd(Segment end) {
-        this.end = end;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        int lx =  (int)(x * Config.CLIIPER_SCALE);
-        this.x = lx*1.0/Config.CLIIPER_SCALE;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        int ly = (int)(y * Config.CLIIPER_SCALE);
-        this.y =  ly*1.0/Config.CLIIPER_SCALE;
-    }
+  public void setY(double y) {
+    int ly = (int) (y * Config.CLIIPER_SCALE);
+    this.y = ly * 1.0 / Config.CLIIPER_SCALE;
+  }
 }

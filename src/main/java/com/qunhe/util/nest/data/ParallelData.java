@@ -7,32 +7,32 @@ import java.util.List;
  * @author yisa
  */
 public class ParallelData {
-    
-    public NfpKey key ;
-    public List<NestPath> value ;
 
-    public ParallelData() {
-        value = new ArrayList<>();
-    }
+  public NfpKey key;
+  public List<NestPath> value;
 
-    public ParallelData(NfpKey key, List<NestPath> value) {
-        this.key = key;
-        this.value = value;
-    }
+  public ParallelData() {
+    value = new ArrayList<>();
+  }
 
-    public NfpKey getKey() {
-        return key;
-    }
+  public ParallelData(NfpKey key, List<NestPath> value) {
+    this.key = key;
+    this.value = value;
+  }
 
-    public void setKey(NfpKey key) {
-        this.key = key;
-    }
+  public NfpKey getKey() {
+    return key;
+  }
 
-    public List<NestPath> getValue() {
-        return value;
-    }
+  public void setKey(NfpKey key) {
+    this.key = key;
+  }
 
-    public void setValue(List<NestPath> value) {
-        this.value = value;
-    }
+  public List<NestPath> getValue() {
+    return value;
+  }
+
+  public void setValue(List<NestPath> value) {
+    this.value = value;
+  }
 }
