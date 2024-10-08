@@ -103,9 +103,10 @@ public class NestTest {
     Nest nest = new Nest(binPolygon, list, config, 20);
     List<List<Placement>> appliedPlacement = nest.startNest();  // Posizionamenti che vengono effettuati dei vari poligoni dopo avere effettuato il nesting
     List<String> strings = SvgUtil.svgGenerator(list, appliedPlacement, width, height);
-    for (String s : strings) {
-      System.out.println(s);
-    }
+    IOUtils.saveSvgFile(strings, Config.OUTPUT_DIR + "solution.html");
+    // for (String s : strings) {
+    //   System.out.println(s);
+    // }
   }
 
   @Test

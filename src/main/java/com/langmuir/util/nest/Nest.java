@@ -141,7 +141,7 @@ public class Nest {
     if (Config.BOUND_SPACING > 0) {
       List<NestPath> offsetBin = CommonUtil.polygonOffset(binPolygon, -Config.BOUND_SPACING);
       if (offsetBin.size() == 1) {
-        binPolygon = offsetBin.get(0);
+        binPolygon = offsetBin.getFirst();
       }
     }
     binPolygon.setId(-1);

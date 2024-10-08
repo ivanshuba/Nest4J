@@ -115,12 +115,12 @@ public class GeneticAlgorithmTest {
     }
 
 
-//        System.out.println(GA.binBounds);
-//        System.out.println("size = " +GA.population.size());
-//        for(int i = 0; i<GA.population.size() ;i ++){
-//            System.out.println("=============================================");
-//            System.out.println(GA.population.get(i));
-//        }
+       System.out.println(GA.binBounds);
+       System.out.println("size = " +GA.population.size());
+       for(int i = 0; i<GA.population.size() ;i ++){
+           System.out.println("=============================================");
+           System.out.println(GA.population.get(i));
+       }
 
   }
 

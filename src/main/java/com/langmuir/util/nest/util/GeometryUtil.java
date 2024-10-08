@@ -549,7 +549,7 @@ public class GeometryUtil {
 
           Segment startPoint = new Segment(B.offsetX, B.offsetY);
 
-          if (((Binside != null && inside) || (Binside == null && !inside)) && !intersect(A, B) && !inNfp(startPoint, NFP)) {
+          if (inside && !intersect(A, B) && !inNfp(startPoint, NFP)) {
             return startPoint;
           }
 

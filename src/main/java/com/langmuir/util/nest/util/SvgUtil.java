@@ -13,42 +13,49 @@ public class SvgUtil {
    *
    * @param list      List<NestPath> to be converted in SVG
    * @param applied   List<List<Placement>> corresponding to the placements of the NestPaths on the bins
-   * @param binwidth  width of the bins
+   * @param binWidth  width of the bins
    * @param binHeight height of the bins
    * @throws Exception
    * @return List<String> corresponding to the SVG elements
    */
-  public static List<String> svgGenerator(List<NestPath> list, List<List<Placement>> applied, double binwidth, double binHeight) throws Exception {
+  public static List<String> svgGenerator(List<NestPath> list,
+                                          List<List<Placement>> applied,
+                                          double binWidth,
+                                          double binHeight) throws Exception {
     List<String> strings = new ArrayList<>();
     int x = 0;
     int y = 0;
     for (List<Placement> binlist : applied) {
-      String s = " <g transform=\"translate(" + x + "  " + y + ")\">" + "\n";
-      s += "    <rect x=\"0\" y=\"0\" width=\"" + binwidth + "\" height=\"" + binHeight + "\"  fill=\"none\" stroke=\"#010101\" stroke-width=\"1\" />\n";
+      StringBuilder s = new StringBuilder();
+      s.append(String.format("""
+           <g transform="translate(%d %d)">
+          """, x, y));
+      s.append(String.format("""
+          <rect x="0" y="0" width="%f" height="%f" fill="none" stroke="#010101" stroke-width="1" />
+          """, binWidth, binHeight));
       for (Placement placement : binlist) {
         int bid = placement.bid;
         NestPath nestPath = getNestPathByBid(bid, list);
+        assert nestPath != null;
+        int numSegments = nestPath.getSegments().size();
         double ox = placement.translate.x;
         double oy = placement.translate.y;
         double rotate = placement.rotate;
-        s += "<g transform=\"translate(" + ox + x + " " + oy + y + ") rotate(" + rotate + ")\"> \n";
-        s += "<path d=\"";
-        for (int i = 0; i < nestPath.getSegments().size(); i++) {
-          if (i == 0) {
-            s += "M";
-          } else {
-            s += "L";
-          }
+        s.append(String.format("""
+            <g transform="translate(%f %f) rotate(%f)">
+            """, ox + x, oy + y, rotate));
+        s.append("<path d=\"");
+        for (int i = 0; i < numSegments; i++) {
+          s.append(i == 0 ? "M" : "L");
           Segment segment = nestPath.getSegment(i);
-          s += segment.x + " " + segment.y + " ";
+          s.append(segment.x).append(" ").append(segment.y).append(" ");
         }
-        String color = (rotate == 0.0) ? "7bafd1" : "fc8d8d";
-        s += "Z\" fill=\"#" + color + "\" stroke=\"#010101\" stroke-width=\"0.5\" />" + " \n";
-        s += "</g> \n";
+        s.append("Z\" fill=\"none\" stroke=\"#010101\" stroke-width=\"0.5\" />" + " \n");
+        s.append("</g> \n");
       }
-      s += "</g> \n";
-      y += binHeight + 50;
-      strings.add(s);
+      s.append("</g> \n");
+      y += (int) (binHeight + 50);
+      strings.add(s.toString());
     }
     return strings;
   }

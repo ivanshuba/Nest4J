@@ -15,7 +15,7 @@ public class GeometryUtilTest {
     nestPath.add(new Segment(10, 10));
     nestPath.add(new Segment(20, 0));
 
-    boolean result = GeometryUtil.pointInPolygon(new Segment(100, 5), nestPath);
+    boolean result = Boolean.TRUE.equals(GeometryUtil.pointInPolygon(new Segment(100, 5), nestPath));
     if (result) {
       System.out.println("SUCCESS");
     } else {

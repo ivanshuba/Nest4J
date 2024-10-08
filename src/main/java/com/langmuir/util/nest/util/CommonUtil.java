@@ -109,7 +109,7 @@ public class CommonUtil {
    * @return
    */
   private static NestCoor toNestCoor(long x, long y) {
-    return new NestCoor(((double) x / Config.CLIIPER_SCALE), ((double) y / Config.CLIIPER_SCALE));
+    return new NestCoor((double) x / Config.CLIIPER_SCALE, (double) y / Config.CLIIPER_SCALE);
   }
 
 
@@ -202,16 +202,16 @@ public class CommonUtil {
   public static void offsetTree(List<NestPath> t, double offset) {
     for (NestPath element : t) {
       List<NestPath> offsetPaths = polygonOffset(element, offset);
+
       if (offsetPaths.size() == 1) {
         element.clear();
-        NestPath from = offsetPaths.get(0);
-
+        NestPath from = offsetPaths.getFirst();
         for (Segment s : from.getSegments()) {
           element.add(s);
         }
       }
-      if (element.getChildren().size() > 0) {
 
+      if (!element.getChildren().isEmpty()) {
         offsetTree(element.getChildren(), -offset);
       }
     }

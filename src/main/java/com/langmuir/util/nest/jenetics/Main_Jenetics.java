@@ -8,7 +8,7 @@ import com.langmuir.util.nest.config.Config;
 import com.langmuir.util.nest.data.NestPath;
 import com.langmuir.util.nest.data.Placement;
 import com.langmuir.util.nest.data.Segment;
-import com.langmuir.util.nest.gui.guiUtil;
+import com.langmuir.util.nest.gui.GuiUtil;
 import com.langmuir.util.nest.util.CommonUtil;
 import com.langmuir.util.nest.util.GeometryUtil;
 import io.jenetics.DoubleGene;
@@ -53,7 +53,7 @@ public class Main_Jenetics {
     List<NestPath> polygons = null;
 
     try {
-      polygons = guiUtil.transferSvgIntoPolygons();
+      polygons = GuiUtil.transferSvgIntoPolygons(null);
     } catch (DocumentException e) {
       e.printStackTrace();
     }
@@ -110,7 +110,7 @@ public class Main_Jenetics {
     if (Config.BOUND_SPACING > 0) {
       List<NestPath> offsetBin = CommonUtil.polygonOffset(binPolygon, -Config.BOUND_SPACING);
       if (offsetBin.size() == 1) {
-        binPolygon = offsetBin.get(0);
+        binPolygon = offsetBin.getFirst();
       }
     }
     binPolygon.setId(-1);
@@ -184,7 +184,7 @@ public class Main_Jenetics {
 
     try {
       List<String> res = createSvg(tree, binWidth, binHeight);
-      guiUtil.saveSvgFile(res, Config.OUTPUT_DIR + "res.html", binWidth, binHeight);
+      GuiUtil.saveSvgFile(res, Config.OUTPUT_DIR + "res.html", binWidth, binHeight);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -251,29 +251,28 @@ public class Main_Jenetics {
   public static List<String> createSvg(List<NestPath> list, double binwidth, double binheight) {
 
     List<String> strings = new ArrayList<>();
-    String s = "    <rect x=\"0\" y=\"0\" width=\"" + binwidth + "\" height=\"" + binheight + "\"  fill=\"none\" stroke=\"#010101\" stroke-width=\"1\" />\n";
+    StringBuilder s = new StringBuilder("    <rect x=\"0\" y=\"0\" width=\"" + binwidth + "\" height=\"" + binheight + "\"  fill=\"none\" stroke=\"#010101\" stroke-width=\"1\" />\n");
 
-    for (int j = 0; j < list.size(); j++) {
-      NestPath nestPath = list.get(j);
-//        	double ox = placement.translate.x;
+    for (NestPath nestPath : list) {
+      //        	double ox = placement.translate.x;
 //        	double oy = placement.translate.y;
 //        	double rotate = placement.rotate;
       //s += "<g transform=\"translate(" + ox + x + " " + oy + y + ") rotate(" + rotate + ")\"> \n";
-      s += "<path id=\"" + nestPath.getBid() + "\" d=\"";
+      s.append("<path id=\"").append(nestPath.getBid()).append("\" d=\"");
       for (int i = 0; i < nestPath.getSegments().size(); i++) {
         if (i == 0) {
-          s += "M";
+          s.append("M");
         } else {
-          s += "L";
+          s.append("L");
         }
         Segment segment = nestPath.getSegment(i);
-        s += segment.x + " " + segment.y + " ";
+        s.append(segment.x).append(" ").append(segment.y).append(" ");
       }
-      s += "Z\" fill=\"#8498d1\" stroke=\"#010101\" stroke-width=\0.5\" />" + " \n";
+      s.append("Z\" fill=\"#8498d1\" stroke=\"#010101\" stroke-width=\0.5\" />" + " \n");
       //s += "</g> \n";
     }
     //y += binHeight + 50;
-    strings.add(s);
+    strings.add(s.toString());
 
     return strings;
 

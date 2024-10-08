@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +21,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.w3c.dom.svg.SVGDocument;
 
-public class guiUtil {
+public class GuiUtil {
 
 
   /**
@@ -29,14 +30,14 @@ public class guiUtil {
    * @return List<Nestpath>
    * @throws DocumentException
    */
-  public static List<NestPath> transferSvgIntoPolygons() throws DocumentException {
+  public static List<NestPath> transferSvgIntoPolygons(String selectedFilePath) throws DocumentException {
+    final String DEFAULT_FILE_PATH = "input/test2.xml";
 
     int increment_id = 1;
     List<NestPath> nestPaths = new ArrayList<>();
     SAXReader reader = new SAXReader();
-    Document document = reader.read("input/test2.xml");
+    Document document = reader.read(Objects.nonNull(selectedFilePath) ? selectedFilePath : DEFAULT_FILE_PATH);
     //Document document = reader.read("input/simple.xml");
-
 
     List<Element> elementList = document.getRootElement().elements();
     for (Element element : elementList) {
@@ -45,7 +46,7 @@ public class guiUtil {
         NestPath polygon = new NestPath();
         for (String s : datalist.split(" ")) {
           s = s.trim();
-          if (s.indexOf(",") == -1) {
+          if (!s.contains(",")) {
             continue;
           }
           String[] value = s.split(",");

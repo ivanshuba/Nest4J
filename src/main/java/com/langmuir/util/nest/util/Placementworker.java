@@ -266,7 +266,7 @@ public class Placementworker {
         }
       }
       if (minwidth != Double.MAX_VALUE) {
-        fitness += minwidth; /// binarea;
+        fitness += minwidth; // binarea;
         //fitness = minwidth;
       }
 

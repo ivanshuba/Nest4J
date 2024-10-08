@@ -6,7 +6,7 @@ import com.langmuir.util.nest.Nest;
 import com.langmuir.util.nest.config.Config;
 import com.langmuir.util.nest.data.NestPath;
 import com.langmuir.util.nest.data.Placement;
-import com.langmuir.util.nest.gui.guiUtil;
+import com.langmuir.util.nest.gui.GuiUtil;
 import com.langmuir.util.nest.util.CommonUtil;
 import com.langmuir.util.nest.util.SvgUtil;
 import io.jenetics.EnumGene;
@@ -59,7 +59,7 @@ public class NFPNesting implements Problem<ISeq<NestPath>, EnumGene<NestPath>, D
     List<NestPath> polygons = null;
 
     try {
-      polygons = guiUtil.transferSvgIntoPolygons();
+      polygons = GuiUtil.transferSvgIntoPolygons(null);
     } catch (DocumentException e) {
       e.printStackTrace();
     }
@@ -119,7 +119,7 @@ public class NFPNesting implements Problem<ISeq<NestPath>, EnumGene<NestPath>, D
     List<List<Placement>> appliedPlacement = Nest.applyPlacement(nst.evaluator.tmpBestResult, tree);
     try {
       List<String> strings = SvgUtil.svgGenerator(tree, appliedPlacement, binWidth, binHeight);
-      guiUtil.saveSvgFile(strings, Config.OUTPUT_DIR + config.OUTPUT_FILENAME, binWidth, binHeight);
+      GuiUtil.saveSvgFile(strings, Config.OUTPUT_DIR + config.OUTPUT_FILENAME, binWidth, binHeight);
     } catch (Exception e) {
       e.printStackTrace();
     } finally {

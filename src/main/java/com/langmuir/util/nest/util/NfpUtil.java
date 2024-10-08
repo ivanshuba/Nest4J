@@ -30,52 +30,40 @@ public class NfpUtil {
     if (pair.getKey().isInside()) {
       if (GeometryUtil.isRectangle(A, 0.001)) {
         nfp = GeometryUtil.noFitPolygonRectangle(A, B);
-        if (nfp == null) {
-
-        }
       } else {
         nfp = GeometryUtil.noFitPolygon(A, B, true, searchEdges);
       }
-      if (nfp != null && nfp.size() > 0) {
+      if (nfp != null && !nfp.isEmpty()) {
         for (NestPath element : nfp) {
           if (GeometryUtil.polygonArea(element) > 0) {
             element.reverse();
           }
         }
-      } else {
-        //Warning on null inner NFP
       }
     } else {
       int count = 0;
       if (searchEdges) {
-
-        // NFP Generator TODO  double scale contorl
+        // NFP Generator TODO  double scale control
         nfp = GeometryUtil.noFitPolygon(A, B, false, searchEdges);
-        if (nfp == null) {
-
-        }
       } else {
-
         nfp = GeometryUtil.minkowskiDifference(A, B);
       }
-      // sanity check
-      if (nfp == null || nfp.size() == 0) {
-
+      if (nfp.isEmpty()) {
         return null;
       }
+
       //TODO This test is causing null result
       for (int i = 0; i < nfp.size(); i++) {
         if (!searchEdges || i == 0) {
           // TODO why here: normally the area of nfp should be greater than A
           if (Math.abs(GeometryUtil.polygonArea(nfp.get(i))) < Math.abs(GeometryUtil.polygonArea(A))) {
             nfp.remove(i);
-
             return null;
           }
         }
       }
-      if (nfp.size() == 0) {
 
+      if (nfp.isEmpty()) {
         return null;
       }
 
@@ -85,7 +73,7 @@ public class NfpUtil {
         }
 
         if (i > 0) {
-          if (GeometryUtil.pointInPolygon(nfp.get(i).getSegment(0), nfp.get(0))) {
+          if (Boolean.TRUE.equals(GeometryUtil.pointInPolygon(nfp.get(i).getSegment(0), nfp.getFirst()))) {
             if (GeometryUtil.polygonArea(nfp.get(i)) < 0) {
               nfp.get(i).reverse();
             }
@@ -93,32 +81,23 @@ public class NfpUtil {
         }
       }
 
-      if (useHoles && A.getChildren().size() > 0) {
+      if (useHoles && !A.getChildren().isEmpty()) {
         Bound Bbounds = GeometryUtil.getPolygonBounds(B);
         for (int i = 0; i < A.getChildren().size(); i++) {
           Bound Abounds = GeometryUtil.getPolygonBounds(A.getChildren().get(i));
-
           if (Abounds.width > Bbounds.width && Abounds.height > Bbounds.height) {
-
             List<NestPath> cnfp = GeometryUtil.noFitPolygon(A.getChildren().get(i), B, true, searchEdges);
-            // ensure all interior NFPs have the same winding direction
-
-            if (cnfp != null && cnfp.size() > 0) {
-
-              for (int j = 0; j < cnfp.size(); j++) {
-                if (GeometryUtil.polygonArea(cnfp.get(j)) < 0) {
-                  cnfp.get(j).reverse();
+            if (!cnfp.isEmpty()) {
+              for (NestPath nestPath : cnfp) {
+                if (GeometryUtil.polygonArea(nestPath) < 0) {
+                  nestPath.reverse();
                 }
-                nfp.add(cnfp.get(j));
+                nfp.add(nestPath);
               }
             }
-
           }
         }
       }
-    }
-    if (nfp == null) {
-
     }
     return new ParallelData(pair.getKey(), nfp);
   }
